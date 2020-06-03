@@ -3,6 +3,7 @@ import { Card, CardImg, CardText, CardBody,
     CardTitle, Breadcrumb, Col,BreadcrumbItem, Navbar,Button,NavItem,Modal,ModalBody,ModalHeader,Row,Label} from 'reactstrap';
 import { Link } from 'react-router-dom';
 import { Control, LocalForm, Errors } from 'react-redux-form';
+import { Loading } from './LoadingComponent';
 
     function RenderDish({dish}) {
             return(
@@ -35,9 +36,31 @@ import { Control, LocalForm, Errors } from 'react-redux-form';
     }
 
     const DishDetail=(props)=>{
-        if (props.dish == null) {
+
+        if(props.isLoading) {
+          return(
+            <div className="container">
+            <div className="row">
+            <Loading />
+            </div>
+            </div>
+          );
+        }
+
+        else if (props.errMess) {
+        return(
+            <div className="container">
+                <div className="row">
+                    <h4>{props.errMess}</h4>
+                </div>
+            </div>
+        );
+    }
+
+        else if (props.dish == null) {
             return <div></div>
         }
+
         else {
             return(
               <div class="container">
@@ -126,7 +149,6 @@ export class CommentForm extends Component {
 
                                             <Control.text model=".author" id="author" name="author" placeholder="Author" className="form-control" validators={{ required, minLength: minLength(3), maxLength: maxLength(15) }} />
                                             <Errors className="text-danger" model=".author" show="touched" messages={{ required: 'Required', minLength: 'Must be greater than 3 characters', maxLength: 'Must be 15 charaters or less' }} />
-
                                     </Row>
 
                                     <Row className="form-group">
