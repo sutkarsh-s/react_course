@@ -11,6 +11,7 @@ import { postComment, fetchDishes, fetchComments, fetchPromos } from '../redux/A
 import { Switch, Route, Redirect, withRouter } from 'react-router-dom';
 import {connect} from 'react-redux';
 import { actions } from 'react-redux-form';
+import { TransitionGroup, CSSTransition } from 'react-transition-group';
 
 
 
@@ -75,7 +76,9 @@ class Main extends React.Component {
     return (
     <div>
     <Header />
-        <Switch>
+    <TransitionGroup>
+    <CSSTransition key ={this.props.location.key} classNames ="page" timeout ={300}>
+        <Switch location={this.props.location}>
         <Route path='/home' component={Homepage} />
         <Route exact path='/menu' component={() => <Menu dishes={this.props.dishes} />} />
         <Route path='/menu/:dishId' component={DishWithId} />
@@ -83,6 +86,8 @@ class Main extends React.Component {
         <Route exact path='/aboutus' component={() => <About leaders={this.props.leaders} />} />
         <Redirect to="/home" />
         </Switch>
+        </CSSTransition>
+        </TransitionGroup>
     <Footer />
     </div>
   );
